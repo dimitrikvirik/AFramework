@@ -1,0 +1,32 @@
+{
+  "admin":
+  {
+    "username": "root",
+    "password": "123"
+  },
+  "page": {
+    "title": "MySite",
+    "js": [
+      "main",
+      "jquery",
+      "jquery-ui.min"
+    ],
+    "css": [
+      "style",
+      "new"
+    ]
+  },
+  "server": {
+    "host": "localhost",
+    "dbname": "test",
+    "user": "root",
+    "password": "",
+    "port": "3306"
+  },
+  "email": {
+    "host": "",
+    "user": "",
+    "password": "",
+    "port": ""
+  }
+}
