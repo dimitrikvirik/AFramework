@@ -37,8 +37,9 @@ class Page{
      * @param $file
      * გვერდის გაფართოვება. იწერება ფაილის ქვემოდ
      */
-    public static function extend($file){
-        include_once "./view/{$file}.php";
+    public static function extend(string $file, bool $isLayout = true){
+         $file = ($isLayout)? "/layouts/".$file: "/templates/".$file;
+        require_once "./resources/{$file}.php";
     }
 
     /**
@@ -53,14 +54,14 @@ class Page{
      * @param $name
      * ამატებს js ფაილს მისი სახელის მიხედვით.
      */
-    public static function js($name){
+    public static function addJs($name){
         array_push(self::$conf["js"], $name);
     }
     /**
      * @param $name
      * ამატებს css ფაილს მისი სახელის მიხედვით.
      */
-    public static function css($name){
+    public static function addCss($name){
         array_push(self::$conf["css"], $name);
     }
 
@@ -71,11 +72,20 @@ class Page{
     public static function vars(array $arr){
        self::$var += $arr;
     }
+    public static function view($file, $title = "", $use_layout = true){
+        if($use_layout) {
+            self::title($title);
+            self::section();
+            require_once $_SERVER['DOCUMENT_ROOT'] . "/resources/templates/{$file}.php";
+            self::endsection("content");
+            require_once $_SERVER['DOCUMENT_ROOT'] . "/resources/layouts/layout.php";
+        }else   require_once $_SERVER['DOCUMENT_ROOT'] . "/resources/{$file}.php";
+    }
     /**
      * config.json-დან პარამეტრების დაიმპორტება
      */
-    public static function importConf(){
-        self::$conf = read_conf("page");
+    public static function run(){
+       self::$conf = read_conf("page");
     }
 
     /**

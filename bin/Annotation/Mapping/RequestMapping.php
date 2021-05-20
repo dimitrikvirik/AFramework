@@ -3,10 +3,10 @@
 
 namespace Annotation\Mapping;
 
-use Annotation\Annotation;
+
 
 #[\Attribute]
-class RequestMapping extends Annotation
+class RequestMapping extends \Bean
 {
     public function __construct(
         public string $value = "",

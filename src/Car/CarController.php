@@ -3,24 +3,31 @@
 
 namespace Car;
 
-use Annotation\AutoWired;
+
+use Annotation\Controller;
+use Annotation\Injection\AutoWired;
+use Annotation\Injection\Qualifier;
 use Annotation\Mapping\DeleteMapping;
 use Annotation\Mapping\GetMapping;
-use Annotation\Mapping\RequestMapping;
 
-#[RequestMapping("/car")]
+#[Controller]
 class CarController
 {
-    #[AutoWired]
+    #[Qualifier("CarServiceFileImp")]
     public static CarService $carService;
 
-    #[GetMapping("/{p1:any}")]
-    public static function name($args){
+    #[GetMapping]
+    public function home(){
+       self::$carService->name("BMW");
 
-      self::$carService->name($args[0]);
+    }
+    #[GetMapping("/test")]
+    public function test(){
+      echo "TEST";
+
     }
     #[DeleteMapping]
-    public static function getPrice(){
+    public function getPrice(){
        echo "DELETE MAPPING!";
     }
 }

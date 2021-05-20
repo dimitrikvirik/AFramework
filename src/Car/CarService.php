@@ -1,7 +1,7 @@
 <?php
 namespace Car;
 use Annotation;
-#[Annotation("service")]
+
 interface CarService
 {
 

@@ -1,8 +1,10 @@
 <?php
 
 
+namespace Handler;
 
-
+use ReflectionClass;
+use ReflectionException;
 class AnnotationHandler
 {
 
@@ -11,16 +13,15 @@ class AnnotationHandler
      */
     public static function controller($file)
     {
+
         $class = new ($file)();
         $ref = new ReflectionClass($class::class);
         $withPath = "";
         //Properties
         foreach ($ref->getProperties() as &$property) {
             foreach ($property->getAttributes() as &$attribute) {
-                $arr = $attribute->newInstance()->find($ref->getNamespaceName());
-                $className = "\\".$arr[0];
-                $impClass = new $className();
-                $ref->setStaticPropertyValue($property->getName(), $impClass);
+                    $arr = \Bean::find($property->getType());
+                    $attribute->newInstance()->inject($property, $arr);
             }
         }
         //Class

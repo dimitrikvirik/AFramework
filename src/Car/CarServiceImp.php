@@ -4,14 +4,16 @@
 namespace Car;
 
 
+use Annotation\Component;
 
+#[Component]
 class CarServiceImp implements CarService
 {
 
     public function name(string $a)
     {
         \Page::$var["model"] = $a;
-        view("/car", "Car Site");
+      echo $a;
     }
 
     public function getPrice(string $model)
