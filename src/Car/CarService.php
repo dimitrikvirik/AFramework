@@ -6,6 +6,5 @@ interface CarService
 {
 
     public function name(string $a);
-
-    public function getPrice(string $model);
+    public function add();
 }

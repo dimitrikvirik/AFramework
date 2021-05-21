@@ -1,5 +1,6 @@
 <?php
 
+namespace Web;
 /**
  * Class Page
  * გვერდებთან მუშაობასთან კლასი
@@ -85,7 +86,7 @@ class Page{
      * config.json-დან პარამეტრების დაიმპორტება
      */
     public static function run(){
-       self::$conf = read_conf("page");
+       self::$conf = \Util::ReadConf("page");
     }
 
     /**
@@ -94,6 +95,15 @@ class Page{
      */
     private static function callback($buffer){
 
+    }
+    static function printError($key): string{
+        session_start();
+        $msg = "";
+        if(isset($_SESSION[$key])){
+            $msg = $_SESSION[$key];
+            unset($_SESSION[$key]);
+        }
+        return $msg;
     }
 
 }

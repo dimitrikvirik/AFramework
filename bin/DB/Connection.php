@@ -1,5 +1,10 @@
 <?php
-#[Annotation("Connection bin class")]
+namespace DB;
+
+use Error;
+use PDO;
+use PDOException;
+
 class Connection{
     public PDO $pdo;
     public static PDO $conn;
@@ -21,7 +26,9 @@ class Connection{
     {
        $this->connect();
     }
-    //დაუკავშირდეს სერვერს კლასის პარამეტრებით
+    /**
+     * დაუკავშირდება სერვერს კლასის პარამეტრებით
+     */
     public function connect(): void{
         try {
             $this->pdo = new PDO("mysql:host=".$this->host.";dbname=".$this->dbname.";port=".$this->port, $this->user, $this->pass);
@@ -31,9 +38,12 @@ class Connection{
             throw new Error("Connection failed: " . $e->getMessage());
         }
     }
-    //დაუკავშირდერს სერვერს config.json ფაილის პარამეტრებით
+
+    /**
+     * კონფიგ ფაილიდან ამატებს პარამატრებს
+     */
     public static function importConf(){
-        $conf = read_conf("server");
+        $conf = \Util::ReadConf("server");
         self::$conn =
             (new Connection($conf["host"], $conf["dbname"], $conf["user"], $conf["password"], $conf["port"]))->getPdo();
     }

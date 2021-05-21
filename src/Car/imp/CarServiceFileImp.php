@@ -19,4 +19,9 @@ class CarServiceFileImp implements CarService
     {
         // TODO: Implement getPrice() method.
     }
+
+    public function add()
+    {
+        // TODO: Implement add() method.
+    }
 }

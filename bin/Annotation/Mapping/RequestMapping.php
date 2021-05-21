@@ -5,16 +5,18 @@ namespace Annotation\Mapping;
 
 
 
+use Web\Route;
+
 #[\Attribute]
-class RequestMapping extends \Bean
+class RequestMapping
 {
     public function __construct(
         public string $value = "",
         public string $method = "GET"
     ){}
-    public function run(\ReflectionMethod $classMethod, string $withPath){
+    public function add(\ReflectionMethod $classMethod, string $withPath){
 
-        \Route::add($withPath.$this->value,$classMethod , $this->method);
+        Route::add($withPath.$this->value,$classMethod , $this->method);
     }
 
 }

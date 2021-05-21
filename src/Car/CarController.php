@@ -9,21 +9,24 @@ use Annotation\Injection\AutoWired;
 use Annotation\Injection\Qualifier;
 use Annotation\Mapping\DeleteMapping;
 use Annotation\Mapping\GetMapping;
+use Annotation\Mapping\PostMapping;
+use Annotation\Mapping\RequestMapping;
 
+#[RequestMapping("/car")]
 #[Controller]
 class CarController
 {
-    #[Qualifier("CarServiceFileImp")]
+    #[Qualifier("CarServiceImp")]
     public static CarService $carService;
 
     #[GetMapping]
     public function home(){
-       self::$carService->name("BMW");
+        self::$carService->name("BMW");
 
     }
-    #[GetMapping("/test")]
+    #[PostMapping]
     public function test(){
-      echo "TEST";
+      self::$carService->add();
 
     }
     #[DeleteMapping]

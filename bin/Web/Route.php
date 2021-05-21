@@ -1,6 +1,8 @@
 <?php
 
-use JetBrains\PhpStorm\Pure;
+
+namespace Web;
+use ReflectionMethod;
 
 class Route{
     private static string $url;
@@ -65,6 +67,9 @@ class Route{
             $object = new $func->class(); // ფუნქციის კლასი
             $closure =  $func->getClosure($object);
             call_user_func_array($closure, $params);
+            if($method != "GET"){
+            echo "<script>document.location.replace('".$_SERVER['HTTP_REFERER']."')</script>";
+            }
             exit; // სხვა add-ებს აღარ შეხედავს
         }
 

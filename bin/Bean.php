@@ -7,36 +7,31 @@
 class Bean
 {
     private static string $cacheFile = "resources/cache/beans.csv";
+
     /**
      * @return array
      * @throws ReflectionException
      * პოულობს დამოკიდებულებებს (კლასებს, რომელიც აიმპლემენტირებს ინტერფესის) და ინახავს კეშ ფაილში
      * beans.csv
      */
-    public static function makeCache(): void{
+     static private function makeCache(): void{
         $out = fopen(self::$cacheFile, 'w');
-        $di = new RecursiveDirectoryIterator('src/');
-        //გადავუვლით ყველა ფაილებს ყველა ქვეპაპკაში
-        foreach (new RecursiveIteratorIterator($di) as $filename => $file) {
-            if (str_ends_with($file, ".php")) {
-                $className = substr($file, 3, -4);
-                $refClass = new ReflectionClass($className);
-                foreach ($refClass->getAttributes() as &$atr){
-                   if(str_contains($atr->getName(), "Component")){
-                       $arr = $refClass->getInterfaceNames();
-                       array_push($arr, $refClass->getName());
-                       fputcsv($out,$arr);
-                   }
-                }
-            }
-        }
+        //Components
+        Util::EachClass(function ($refClass) use ($out) {
+             $arr = $refClass->getInterfaceNames();
+                 array_push($arr, $refClass->getName());
+                fputcsv($out,$arr);
+        }, "Component");
+
         fclose($out);
     }
 
     /**
      * @throws ReflectionException
+     * მოძებნის ინტერფეისის იმპლიმენტირის ფაილებს კეშში,
+     * თუ ვერ მოძებნის, მაშინ შექმნის კეშ ფაილს
      */
-    public static  function find(string $interface): array{
+     static  function find(string $interface): array{
         $arr = [];
         if(!file_exists(self::$cacheFile)){
             self::makeCache();
@@ -55,4 +50,18 @@ class Bean
         return  $arr;
     }
 
+    /**
+     * @throws ReflectionException
+     * ჩაამატებს ყველა დამოკიდებულებს
+     */
+    static function run(){
+        Util::EachClass(function($ref){
+            foreach ($ref->getProperties() as &$property) {
+                foreach ($property->getAttributes() as &$attribute) {
+                    $arr = \Bean::find($property->getType());
+                    $attribute->newInstance()->inject($property, $arr);
+                }
+            }
+        }, "");
+    }
 }
