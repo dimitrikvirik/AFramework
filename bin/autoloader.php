@@ -2,7 +2,6 @@
 
 use DB\Connection;
 use DB\DB;
-use Handler\AnnotationHandler;
 use Web\Controller;
 use Web\Page;
 use Web\Route;

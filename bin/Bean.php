@@ -62,6 +62,6 @@ class Bean
                     $attribute->newInstance()->inject($property, $arr);
                 }
             }
-        }, "");
+        }, "ANY");
     }
 }

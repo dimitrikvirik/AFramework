@@ -15,8 +15,8 @@ class RequestMapping
         public string $method = "GET"
     ){}
     public function add(\ReflectionMethod $classMethod, string $withPath){
-
         Route::add($withPath.$this->value,$classMethod , $this->method);
     }
+
 
 }

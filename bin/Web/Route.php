@@ -19,7 +19,7 @@ class Route{
     {
 
     }
-    public static  function  add(string $path, ReflectionMethod $func, string $method = "GET")
+    public static  function  add(string $path,  ReflectionMethod $func, string $method = "GET")
     {
 
         $reurl = $_SERVER["REDIRECT_URL"] ?? "und";
@@ -63,11 +63,26 @@ class Route{
         } elseif ($path == "") $condition = true;
 
         if ($condition && $_SERVER["REQUEST_METHOD"] == $method) {
-            self::$success = true;
-            $object = new $func->class(); // ფუნქციის კლასი
-            $closure =  $func->getClosure($object);
-            call_user_func_array($closure, $params);
-            if($method != "GET"){
+
+                self::$success = true;
+                $object = new $func->class(); // ფუნქციის კლასი
+                $closure =  $func->getClosure($object);
+                if($func->getReturnType()){
+                    //გადაიყვანთ ობიექტის დამაბრუნებელ მნიშვნელობას JSON-ში
+                  $json =  json_encode(call_user_func_array($closure, $params));
+                  echo $json;
+                }
+                else{
+                       foreach ($func->getParameters() as &$parameter){
+                           foreach ($parameter->getAttributes() as &$attribute){
+                               $obj =  $attribute->newInstance()->get($parameter->getType());
+                                array_push($params,  $obj);
+                           }
+                       }
+                    call_user_func_array($closure, $params);
+                }
+
+            if($method != "GET" && isset($_SESSION['HTTP_REFERER'])){
             echo "<script>document.location.replace('".$_SERVER['HTTP_REFERER']."')</script>";
             }
             exit; // სხვა add-ებს აღარ შეხედავს
