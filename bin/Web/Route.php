@@ -27,6 +27,7 @@ class Route{
         $method = strtoupper($method);
         $condition = false;
         $params = array();
+        $pathParams = array();
         //ვამოწმებთ თუ მთავარ გვერდზე არ გადადის
 
         if ($reurl !== "und") {
@@ -35,24 +36,11 @@ class Route{
             //ვამოწმებთ თუ ემთხვევა რაოდენობრივად
 
             if (sizeof($arr_url) === sizeof($arr_path)) {
-                $n = 1;
-                foreach ($arr_path as $key => &$value) {
-                    preg_match('/(?P<name>\w+):(?P<type>\w+)/', $value, $matches);
-                    if (!empty($matches)) {
-                        $n++;
-                        if (isset($arr_url[$key])) {
-                            if (
-                                ($matches["type"] == "num" && is_numeric($arr_url[$key])) ||
-                                ($matches["type"] == "str" && ctype_alpha($arr_url[$key])) ||
-                                ($matches["type"] == "any")
-                            ) {
-                                $value = $arr_url[$key];
-                                //ჩაამატოს პარამეტრებში
-                                array_push($params, $value);
-                            }
-                        }
-                    } else if ($value != $arr_url[$key]) {
-                        break;
+
+                for($i = 0; $i < sizeof($arr_path); $i++){
+                    if(str_starts_with($arr_path[$i], '{') && str_ends_with($arr_path[$i], '}')){
+                        $pathParams[substr($arr_path[$i], 1, -1)] = $arr_url[$i];
+                        $condition = true;
                     }
                 }
                 //თუ ყველა ელემენტები ერთმანეთს ემთხვევა
@@ -75,7 +63,16 @@ class Route{
                 else{
                        foreach ($func->getParameters() as &$parameter){
                            foreach ($parameter->getAttributes() as &$attribute){
-                               $obj =  $attribute->newInstance()->get($parameter->getType());
+                               if($attribute->getName() == "Annotation\RequestParam"){
+
+                                   $obj =  $attribute->newInstance()->get($parameter->getType(), $parameter->getName());
+                               }
+                               else if($attribute->getName() == "Annotation\PathVariable"){
+                                    $obj = $attribute->newInstance()->get($parameter->getType(), $parameter->getName(),  $pathParams);
+                               }
+                               else{
+                                $obj =  $attribute->newInstance()->get($parameter->getType());
+                               }
                                 array_push($params,  $obj);
                            }
                        }
