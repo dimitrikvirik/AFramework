@@ -8,6 +8,7 @@ use Annotation\Component;
 use Annotation\Mapping\PostMapping;
 use DB\DB;
 use Objects\NotFoundObject;
+use R;
 use Util;
 
 #[Component]
@@ -16,15 +17,13 @@ class ProgramServeImp implements ProgramServe
 
     function get(): array
     {
-       return  DB::Table("programs")->Select();
+       return R::findAll("programs");
     }
 
     function getById(int $id): ProgramView|NotFoundObject
     {
-        $obj = DB::Table("programs")->SelectId($id, ProgramView::class);
-
-
-      return  $obj;
+        $arr =   R::findOne( 'programs', ' id = ? ', [ $id]);
+      return Util::toObject((array)$arr, ProgramView::class);
     }
 
     function add(ProgramView $programView): void

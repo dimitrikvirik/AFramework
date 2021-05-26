@@ -8,8 +8,9 @@ function responsive(){
     }
     else{
         $("#menu-button").hide()
+        $("#menu").prepend( $("#title"))
         menuVisible = true
-        $("#menu").prepend( $("#title")).show().css("height", "auto")
+        $("#menu").show().css("height", "auto")
     }
 }
 responsive();

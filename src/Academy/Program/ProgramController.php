@@ -8,8 +8,8 @@ use Annotation\Injection\AutoWired;
 use Annotation\Mapping\GetMapping;
 use Annotation\Mapping\PostMapping;
 use Annotation\Mapping\RequestMapping;
-use Annotation\PathVariable;
-use Annotation\RequestBody;
+use Annotation\Variable\PathVariable;
+use Annotation\Variable\RequestBody;
 
 #[Controller]
 #[RequestMapping("/programs")]

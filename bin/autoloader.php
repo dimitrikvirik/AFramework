@@ -12,7 +12,7 @@ spl_autoload_register(function($className){
      if(file_exists("src/".$fileName)) require_once "src/".$fileName;
      elseif(file_exists("bin/".$fileName)) require_once "bin/".$fileName;
 });
-DB::run();
+require "db.php";
 Page::run();
 Bean::run();
 Controller::run();

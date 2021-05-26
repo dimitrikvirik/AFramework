@@ -30,28 +30,17 @@ class Util
         $json =  json_decode(file_get_contents("resources/config.json"), true);
         return $json[$key];
     }
-    public static function toObject(array $array, $object)
+    public static function toObject(array $bean, string $className)
     {
-        $class = get_class($object);
-
-        $methods = get_class_methods($class);
-
-        foreach ($methods as $method) {
-
-            preg_match(' /^(set)(.*?)$/i', $method, $results);
-
-            $pre = $results[1]  ?? '';
-
-            $k = $results[2]  ?? '';
-
-            $k = strtolower(substr($k, 0, 1)) . substr($k, 1);
-
-            If ($pre == 'set' && !empty($array[$k])) {
-
-                $object->$method($array[$k]);
-            }
+        $data = array();
+        foreach ($bean as $key=>$value){
+           if(str_ends_with($key, "properties")){
+               $data = $value; break;
+           }
         }
-        return $object;
+        $class = new $className();
+        foreach ($data as $key => $value) $class->{$key} = $value;
+        return $class;
     }
 
 
