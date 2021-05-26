@@ -1,28 +1,17 @@
+<?php
 
+use Web\Page;
+Page::addCss("home");
+?>
+<div id="inner">
+   <div>
+       <h2>CODING IS THE NEW COOL!</h2>
+       <h1>SUMMER CAMPS</h1>
+       <p>Immersive classes for age 4+ |
+           Starts from 3 Kune</p>
+           <button>JOIN US!</button>
+   </div>
 
-
-
-<div id="carForm">
-    <form action="/car" method="post">
-
-        <label>
-            Model:
-            <input type="text" name="model">
-        </label>
-        <label>
-            Speed:
-            <input type="text" name="speed">
-        </label>
-        <label>
-            Price:
-            <input type="text" name="price">
-        </label>
-        <input type="submit" value="Submit">
-    </form>
+    <img src="<?= Page::asset('img/student-computer.png') ?>" alt="student computer">
 </div>
 
-<div id="ErrorMsg">
-    <p style="color: red">
-        <?= \Web\Page::printError("pdoErr") ?>
-    </p>
-</div>

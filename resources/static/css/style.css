@@ -1,31 +1,98 @@
-input[type=text], select {
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300&display=swap');
+
+@font-face {
+    font-family: Montserrat;
+    src: url(../fonts/Montserrat-Bold.ttf);
+}
+@font-face {
+    font-family: Karla;
+    src: url(../fonts/Karla.ttf);
+}
+
+@media screen and (max-width: 750px){
+    #menu{
+        flex-direction: column;
+    }
+    footer img{
+        width: 500px !important;
+    }
+
+}
+body,html{
     width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    height: 100%;
+}
+*{
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
- input[type=submit] {
+header{
     width: 100%;
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    position: relative;
+    z-index: 10;
+    box-shadow: 0 4px 3px -2px lightgray;
 }
-
-input[type=submit]:hover {
-    background-color: #45a049;
+#title{
+    color: #3A3A3A;
+    font-family: Montserrat, serif;
+    display: inline-block;
+    margin: 12px 0;
 }
-
-#carForm {
+#menu{
+    list-style-type: none;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    background-color: white;
+}
+#menu li a{
+    color: #3A3A3A;
+    text-decoration: none;
+    font-family: Karla, serif;
+    font-weight: bold;
+    font-size: 22px;
+    padding: 17px 0;
+    display: inline-block;
+}
+#menu-button{
+    width: 50px;
+    height: 50px;
+    border: 0;
+    background-color: lightgray;
     border-radius: 5px;
-    background-color: #f2f2f2;
+    background-image: url(../img/menu.png);
+    background-size: 80%;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    margin: 5px 20px 0;
+    float: right;
+}
+footer{
+
+    clear: both;
+    bottom:0;
+    left:0;
+    background-color: #F9F9FB;
+    width: 100%;
+    font-family: Karla, serif;
+    color: #9E9E9E;
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    border-top: 2.5px solid #B9AAFF;
+}
+footer img{
+    width: 900px ;
+    align-self: center;
+}
+footer span{
     padding: 20px;
-    width: 50%;
 }

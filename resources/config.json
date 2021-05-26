@@ -9,8 +9,8 @@
     "useHeader": true,
     "useFooter": true,
     "js": [
-      "main",
-      "jquery"
+      "jquery",
+      "main"
     ],
     "css": [
       "style"

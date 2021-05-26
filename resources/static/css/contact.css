@@ -1,0 +1,94 @@
+#inner{
+    display: flex;
+    height: 700px;
+    background-color: #F7F7F7;
+    justify-content: space-between;
+}
+#inner div{
+
+   display: flex;
+    flex-direction: column;
+   justify-content: space-around;
+
+   margin-left: 50px;
+
+}
+#inner ul{
+    list-style-type: none;
+    font-family: Karla,  serif;
+    font-weight: bold;
+    font-size: 20px;
+}
+#inner ul li{
+    padding: 10px;
+}
+#inner ul a{
+    text-decoration: none;
+    color: #9E9E9E;
+    font-weight: normal;
+    font-size: 15px;
+    padding-left: 20px;
+}
+form{
+    width: 500px;
+    display: block;
+    flex-direction: column;
+    justify-content: center;
+}
+label{
+    font-family: Karla, serif;
+}
+input[type=text],input[type=tel] , select{
+    width: 100%;
+    padding: 12px 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    display: block;
+}
+
+input[type=submit] {
+    width: 100%;
+    background-color: rgb(71,205,198);
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+#map{
+    height: 500px;
+    width: 700px;
+    margin: auto 50px;
+    border: 7px solid #9E9E9E !important;
+    border-radius: 5px;
+    float: right;
+    position: relative;
+    right: 0;
+}
+@media screen and (max-width: 1000px){
+   form{
+        width: 70% !important;
+    }
+    #inner ul{
+        font-size: 17px;
+        width: 70% !important;
+    }
+}@media screen and (max-width: 750px){
+    #inner{
+        flex-direction: column-reverse;
+    }
+    #map{
+        width: 80%;
+        margin: 15px 0;
+        align-self: center;
+    }
+    #inner div{
+        margin: 0;
+       align-self: center;
+    }
+    #inner div form, #inner ul{
+        align-self: center;
+        margin: 10px;
+    }
+}

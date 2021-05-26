@@ -1,0 +1,34 @@
+@media screen and (max-width: 1300px) and (min-width: 750px){
+
+
+
+}
+@media screen and (max-width: 750px){
+    #inner p{
+        padding: 0 30px !important;
+    }
+
+}
+#inner{
+    display: flex;
+    width: 100%;
+    height: auto;
+    background-color: #F7F7F7;
+    flex-direction: column;
+    justify-content: space-around;
+    text-align: center;
+    padding-bottom: 30px;
+}
+#inner h1{
+    font-family: Montserrat, serif;
+    color: #556272;
+    display: inline-block;
+    margin: 1vw 0;
+}
+#inner p{
+    font-family: Karla, serif;
+    text-align: justify;
+    color: #9E9E9E;
+    padding: 0 20%;
+
+}

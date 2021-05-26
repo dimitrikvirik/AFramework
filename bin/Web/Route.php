@@ -55,29 +55,19 @@ class Route{
                 self::$success = true;
                 $object = new $func->class(); // ფუნქციის კლასი
                 $closure =  $func->getClosure($object);
-                if($func->getReturnType()){
-                    //გადაიყვანთ ობიექტის დამაბრუნებელ მნიშვნელობას JSON-ში
-                  $json =  json_encode(call_user_func_array($closure, $params));
-                  echo $json;
-                }
-                else{
                        foreach ($func->getParameters() as &$parameter){
                            foreach ($parameter->getAttributes() as &$attribute){
-                               if($attribute->getName() == "Annotation\RequestParam"){
+                               $obj = match ($attribute->getName()) {
+                                   "Annotation\RequestParam" => $attribute->newInstance()->get($parameter->getType(), $parameter->getName()),
+                                   "Annotation\PathVariable" => $attribute->newInstance()->get($parameter->getType(), $parameter->getName(),  $pathParams),
+                                   "Annotation\RequestBody" =>$attribute->newInstance()->get($parameter->getType())
+                               };
 
-                                   $obj =  $attribute->newInstance()->get($parameter->getType(), $parameter->getName());
-                               }
-                               else if($attribute->getName() == "Annotation\PathVariable"){
-                                    $obj = $attribute->newInstance()->get($parameter->getType(), $parameter->getName(),  $pathParams);
-                               }
-                               else{
-                                $obj =  $attribute->newInstance()->get($parameter->getType());
-                               }
                                 array_push($params,  $obj);
                            }
                        }
-                    call_user_func_array($closure, $params);
-                }
+                       $userFunc = call_user_func_array($closure, $params);
+                        if($userFunc) echo json_encode($userFunc);
 
             if($method != "GET" && isset($_SESSION['HTTP_REFERER'])){
             echo "<script>document.location.replace('".$_SERVER['HTTP_REFERER']."')</script>";
