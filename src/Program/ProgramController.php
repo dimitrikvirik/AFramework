@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Academy\Program;
+namespace Program;
 
 use Annotation\Controller;
 use Annotation\Injection\AutoWired;

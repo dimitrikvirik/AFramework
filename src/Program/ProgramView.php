@@ -1,8 +1,10 @@
 <?php
 
 
-namespace Academy\Program;
+namespace Program;
 
+
+use Web\Route;
 
 class ProgramView
 {
@@ -13,8 +15,5 @@ class ProgramView
          string $description =""
     )
     {}
-
-
-
 
 }

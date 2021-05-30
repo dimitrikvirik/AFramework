@@ -1,7 +1,6 @@
 <?php
 
 
-namespace Academy;
 
 
 use Annotation\Controller;

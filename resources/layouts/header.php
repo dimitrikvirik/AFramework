@@ -1,8 +1,7 @@
-<header >
+<header>
     <button id="menu-button"></button>
+    <h1 id="title"><a href="/">ACADEMY</a></h1>
     <ul id="menu">
-        <li><h1 id="title">ACADEMY</h1></li>
-
         <li><a href="/">Home</a></li>
         <li><a href="/about-us">About Us</a></li>
         <li><a href="/programs">Programs</a></li>

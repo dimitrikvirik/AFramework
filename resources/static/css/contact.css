@@ -60,10 +60,13 @@ input[type=submit] {
     height: 500px;
     width: 700px;
     margin: auto 50px;
-    border: 7px solid #9E9E9E !important;
+
+    background: linear-gradient(to top, red, rgb(255,106,102));
+    border: 2px dashed black !important;
     border-radius: 5px;
     float: right;
     position: relative;
+    padding: 7px;
     right: 0;
 }
 @media screen and (max-width: 1000px){

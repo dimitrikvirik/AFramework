@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Academy\Program;
+namespace Program;
 
 
 use Objects\NotFoundObject;

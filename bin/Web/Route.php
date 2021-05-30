@@ -57,10 +57,11 @@ class Route{
                 $closure =  $func->getClosure($object);
                        foreach ($func->getParameters() as &$parameter){
                            foreach ($parameter->getAttributes() as &$attribute){
+                               $nm = "Annotation\Variable\\";
                                $obj = match ($attribute->getName()) {
-                                   "Annotation\RequestParam" => $attribute->newInstance()->get($parameter->getType(), $parameter->getName()),
-                                   "Annotation\PathVariable" => $attribute->newInstance()->get($parameter->getType(), $parameter->getName(),  $pathParams),
-                                   "Annotation\RequestBody" =>$attribute->newInstance()->get($parameter->getType())
+                                   $nm."RequestParam" => $attribute->newInstance()->get($parameter->getType(), $parameter->getName()),
+                                   $nm."PathVariable" => $attribute->newInstance()->get($parameter->getType(), $parameter->getName(),  $pathParams),
+                                   $nm."RequestBody" =>$attribute->newInstance()->get($parameter->getType())
                                };
 
                                 array_push($params,  $obj);

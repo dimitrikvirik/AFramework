@@ -1,5 +1,4 @@
 <?php
-
 use Web\Page;
 Page::addCss("home");
 ?>
@@ -11,7 +10,6 @@ Page::addCss("home");
            Starts from 3 Kune</p>
            <button>JOIN US!</button>
    </div>
-
     <img src="<?= Page::asset('img/student-computer.png') ?>" alt="student computer">
 </div>
 
