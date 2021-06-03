@@ -6,7 +6,7 @@ use ReflectionMethod;
 
 class Route{
     private static bool $success = false;
-    private static bool $returnBack = false;
+    private static bool $returnBack = true;
 
     /**
      * Route constructor.

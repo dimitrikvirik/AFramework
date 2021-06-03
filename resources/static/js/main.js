@@ -35,3 +35,30 @@ $("#menu-button").click(function (){
     }
 
 });
+
+
+function deleteProgram(id){
+    $.ajax({
+        method: "DELETE",
+        url: "/programs/del/"+id
+    }).done(function (msg){
+       location.reload()
+    });
+}
+function editProgram(id){
+   var title = prompt("Enter Title:");
+    var description = prompt("Enter description:");
+
+    mydata = {
+        title,
+        description
+    }
+    const json = JSON.stringify(mydata)
+    $.ajax({
+        method: "PUT",
+        url: "/programs/edit/"+id,
+        data: json
+    }).done(function (msg){
+        location.reload()
+    });
+}

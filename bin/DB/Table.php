@@ -36,11 +36,27 @@ class Table
     {
         return new SelectedTable($this->tableName);
     }
+    public  function delete($statement){
+        $this->sql = "DELETE FROM  {$this->tableName} {$statement}";
+        return $this;
+    }
+    public  function update(array $data, $where): static
+    {
+
+        $this->sql = "UPDATE $this->tableName SET";
+
+        foreach ($data as $key=>$value){
+            $this->sql .= " $key=:$key,";
+        }
+        $this->sql =  substr($this->sql, 0, -1);
+        $this->sql .= " WHERE ".$where;
+        $this->data = $data;
+        return $this;
+    }
 
     //Execute მეთოდის გადატვირთვა
       function execute (): PDOStatement|string
       {
-
             $stmt = Connection::$conn->prepare($this->sql);
             $stmt->execute($this->data);
             return $stmt;

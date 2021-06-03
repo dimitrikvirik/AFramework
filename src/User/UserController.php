@@ -35,6 +35,10 @@ class UserController
     function regForm(){
         self::$userService->create($_POST);
     }
+    #[PostMapping("/logout")]
+    function logout(){
+        self::$userService->logout();
+    }
     #[GetMapping("/recover")]
     function recover(){
         Page::view("user/recover", "Recover Account");

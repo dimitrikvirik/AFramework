@@ -73,4 +73,10 @@ class UserServiceImp implements UserService
     {
         // TODO: Implement recovery() method.
     }
+
+    function logout()
+    {
+        unset($_SESSION["user"]);
+        \Util::goBack();
+    }
 }

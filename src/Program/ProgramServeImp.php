@@ -35,12 +35,17 @@ class ProgramServeImp implements ProgramServe
 
     function edit(int $id, ProgramView $programView): void
     {
-        // TODO: Implement edit() method.
+        if(!$_SESSION["user"]["is_admin"]){
+            DB::Table("programs")->update((array) $programView, "id = $id")->execute();
+        }
     }
 
     function delete(int $id): void
     {
-        // TODO: Implement delete() method.
+        if(!$_SESSION["user"]["is_admin"]) {
+            DB::Table("groups")->delete("where program_id = $id")->execute();
+            DB::Table("programs")->delete("where id = $id")->execute();
+        }
     }
 
     function addToUser(int $id): void
@@ -61,11 +66,15 @@ class ProgramServeImp implements ProgramServe
 
     function delToUser(int $id)
     {
-        // TODO: Implement delToUser() method.
+        $user_id = $_SESSION["user"]["id"];
+        DB::Table("groups")->delete("where user_id = $user_id and program_id = $id")->execute();
     }
 
     function create($data)
     {
-        // TODO: Implement create() method.
+        if(!$_SESSION["user"]["is_admin"]) {
+            $data["teacher_id"] = $_SESSION["user"]["id"];
+            DB::Table("programs")->insert($data)->execute();
+        }
     }
 }
