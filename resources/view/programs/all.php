@@ -2,7 +2,7 @@
 use Web\Page;
 $programs = Page::$var["programs"];
 Page::addCss("program");
-$isAdmin = !$_SESSION["user"]["is_admin"];
+$isAdmin = $_SESSION["user"]["is_admin"];
 ?>
 <table class='table-info'>
     <div id="program-status">

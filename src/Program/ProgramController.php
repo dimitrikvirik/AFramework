@@ -35,9 +35,9 @@ class ProgramController
     function createPost(){
         self::$programServe->create($_POST);
     }
-    #[PostMapping("/rem/{id}")]
+    #[GetMapping("/rem/{id}")]
     function rem(#[PathVariable] int $id){
-        self::$programServe->delete($id);
+        self::$programServe->delToUser($id);
     }
     #[GetMapping("/add/{id}")]
     function add(#[PathVariable] int $id){

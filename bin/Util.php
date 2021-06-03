@@ -86,7 +86,7 @@ class Util
             foreach ($groups as &$group){
                 $program = \DB\DB::Table("programs")->select()->byId($group["program_id"])->execute()->fetch();
                 $program["teacher"] =  \DB\DB::Table("users")->select()->byId($program["teacher_id"])->execute()->fetch();
-                $program_del = "/programs/del/".$program["id"];
+                $program_del = "/programs/rem/".$program["id"];
                 echo "
                     <tr>
                         <td>{$program["title"]}</td>
@@ -99,24 +99,12 @@ class Util
             echo "</table>";
       }
       public static function exportData($data){
-          $fp = fopen('file.csv', 'w');
 
-          fputcsv($fp,$data,"\t");
-          header('Content-Description: File Transfer');
-          header('Content-Type: application/octet-stream');
-          header("Cache-Control: no-cache, must-revalidate");
-          header("Expires: 0");
-          header('Content-Disposition: attachment; filename="'.basename("file.csv").'"');
-          header('Content-Length: ' . filesize("file.csv"));
-          header('Pragma: public');
+          $file = fopen("resources/cache/myfile.txt", "w") or die("Unable to open file!");
 
-//Clear system output buffer
-          flush();
-
-//Read the size of the file
-          readfile("file.csv");
-
-          fclose($fp);
+          $json = json_encode($data);
+          fwrite($file, $json);
+          fclose($file);
       }
 
 
