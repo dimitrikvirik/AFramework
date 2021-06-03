@@ -30,17 +30,20 @@ class Util
         $json =  json_decode(file_get_contents("resources/config.json"), true);
         return $json[$key];
     }
-    public static function toObject(array $bean, string $className)
-    {
-        $data = array();
-        foreach ($bean as $key=>$value){
-           if(str_ends_with($key, "properties")){
-               $data = $value; break;
-           }
+    static function PrintError($key){
+        if(isset( $_SESSION[$key."Err"])) {
+            echo $_SESSION[$key . "Err"];
+            unset($_SESSION[$key . "Err"]);
         }
-        $class = new $className();
-        foreach ($data as $key => $value) $class->{$key} = $value;
-        return $class;
+    }
+    static function PrintSuc($key){
+        if(isset( $_SESSION[$key."Suc"])) {
+            echo $_SESSION[$key . "Suc"];
+            unset($_SESSION[$key . "Suc"]);
+        }
+    }
+    static function goBack(){
+        echo "<script>document.location.replace('".$_SERVER['HTTP_REFERER']."')</script>";
     }
 
 

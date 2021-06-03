@@ -39,8 +39,8 @@ class Page{
      * გვერდის გაფართოვება. იწერება ფაილის ქვემოდ
      */
      static function extend(string $file, bool $isLayout = true){
-         $file = ($isLayout)? "/layouts/".$file: "/templates/".$file;
-        require_once "./resources/{$file}.php";
+         $file = ($isLayout)? "/layouts/".$file: "/view/".$file;
+        require_once "./resources/view/{$file}.php";
     }
 
     /**
@@ -85,9 +85,9 @@ class Page{
         if($use_layout) {
             self::title($title);
             self::section();
-            require_once $_SERVER['DOCUMENT_ROOT'] . "/resources/templates/{$file}.php";
+            require_once $_SERVER['DOCUMENT_ROOT'] . "/resources/view/{$file}.php";
             self::endsection("content");
-            require_once $_SERVER['DOCUMENT_ROOT'] . "/resources/layouts/layout.php";
+            require_once $_SERVER['DOCUMENT_ROOT'] . "/resources/view/layouts/layout.php";
         }else   require_once $_SERVER['DOCUMENT_ROOT'] . "/resources/{$file}.php";
     }
     /**

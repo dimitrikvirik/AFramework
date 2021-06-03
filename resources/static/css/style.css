@@ -10,21 +10,12 @@
     src: url(../fonts/Karla.ttf);
 }
 
-@media screen and (max-width: 750px){
-    #menu{
-        flex-direction: column;
-    }
-    footer{
-        position: relative;
-    }
-    footer img{
-        width: 500px !important;
-    }
 
-}
 body,html{
     width: 100%;
     height: 100%;
+    background-color: #F7F7F7; !important;
+    overflow-x: hidden !important;
 }
 *{
     margin: 0;
@@ -42,7 +33,7 @@ header{
 
     font-family: Montserrat, serif;
     display: inline-block;
-    margin: 12px 0;
+    margin: 12px 0 12px 20px;
 }
 #title a{
     text-decoration: none;
@@ -106,4 +97,42 @@ footer span{
 }
 #inner{
     margin-bottom: 100px;
+}
+
+.table-info{
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    border: 2px solid black;
+    width: 50%;
+    margin: 5% auto;
+}
+.table-info td, .table-info th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+.table-info tr:nth-child(even){background-color: #f2f2f2;}
+
+.table-info tr:hover {background-color: #ddd;}
+
+.table-info th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #04AA6D;
+    color: white;
+}
+
+@media screen and (max-width: 750px){
+    #menu{
+        flex-direction: column;
+        margin-left: 20px;
+        background-color: #F7F7F7;
+    }
+    footer{
+        position: relative;
+    }
+    footer img{
+        width: 500px !important;
+    }
+
 }

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace  Annotation\Variable;
+namespace Annotation;
 
 
 #[\Attribute] class RequestParam

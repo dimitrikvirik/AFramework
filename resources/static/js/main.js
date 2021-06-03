@@ -28,7 +28,7 @@ $("#menu-button").click(function (){
     }
     else{
         $("#menu").show().css("height", "0").animate({
-            height: "400px"
+            height: "300px"
             },700
         )
         menuVisible = true

@@ -1,0 +1,7 @@
+#program-status{
+    text-align: center;
+    margin-top: 50px;
+}
+#program-status p{
+    display: inline-block;
+}

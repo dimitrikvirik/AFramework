@@ -1,6 +1,7 @@
 <?php
 
-
+use DB\Connection;
+use DB\DB;
 use Web\Controller;
 use Web\Page;
 use Web\Route;
@@ -11,10 +12,10 @@ spl_autoload_register(function($className){
      if(file_exists("src/".$fileName)) require_once "src/".$fileName;
      elseif(file_exists("bin/".$fileName)) require_once "bin/".$fileName;
 });
-require "db.php";
+DB::run();
 Page::run();
 Bean::run();
 Controller::run();
-Route::run();
+Route::run(false);
 
 

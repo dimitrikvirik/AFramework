@@ -10960,8 +10960,8 @@ jQuery.fn.andSelf = jQuery.fn.addBack;
 // files that may use define, but not via a proper concatenation script that
 // understands anonymous AMD modules. A named AMD is safest and most robust
 // way to register. Lowercase jquery is used because AMD model names are
-// derived from file names, and jQuery is normally delivered in a lowercase
-// file name. Do this after creating the global so that if an AMD model wants
+// derived from file_upload names, and jQuery is normally delivered in a lowercase
+// file_upload name. Do this after creating the global so that if an AMD model wants
 // to call noConflict to hide this version of jQuery, it will work.
 
 // Note that for maximum portability, libraries that are not jQuery should

@@ -5,19 +5,16 @@ namespace Web;
 use ReflectionMethod;
 
 class Route{
-    private static string $url;
     private static bool $success = false;
-    private static bool $useLoader;
-
+    private static bool $returnBack = false;
 
     /**
      * Route constructor.
      * @param string $url
      * @param bool $success
      */
-    public function __construct($useLoader)
+    public function __construct($useLoad)
     {
-
     }
     public static  function  add(string $path,  ReflectionMethod $func, string $method = "GET")
     {
@@ -34,13 +31,12 @@ class Route{
             $arr_url = explode("/", $reurl);
             $arr_path = explode("/", $path);
             //ვამოწმებთ თუ ემთხვევა რაოდენობრივად
-
             if (sizeof($arr_url) === sizeof($arr_path)) {
 
                 for($i = 0; $i < sizeof($arr_path); $i++){
                     if(str_starts_with($arr_path[$i], '{') && str_ends_with($arr_path[$i], '}')){
                         $pathParams[substr($arr_path[$i], 1, -1)] = $arr_url[$i];
-                        $condition = true;
+                        $arr_path[$i] = $arr_url[$i];
                     }
                 }
                 //თუ ყველა ელემენტები ერთმანეთს ემთხვევა
@@ -57,22 +53,24 @@ class Route{
                 $closure =  $func->getClosure($object);
                        foreach ($func->getParameters() as &$parameter){
                            foreach ($parameter->getAttributes() as &$attribute){
-                               $nm = "Annotation\Variable\\";
+
                                $obj = match ($attribute->getName()) {
-                                   $nm."RequestParam" => $attribute->newInstance()->get($parameter->getType(), $parameter->getName()),
-                                   $nm."PathVariable" => $attribute->newInstance()->get($parameter->getType(), $parameter->getName(),  $pathParams),
-                                   $nm."RequestBody" =>$attribute->newInstance()->get($parameter->getType())
+                                   "Annotation\Variable\RequestParam" => $attribute->newInstance()->get($parameter->getType(), $parameter->getName()),
+                                   "Annotation\Variable\PathVariable" => $attribute->newInstance()->get($parameter->getType(), $parameter->getName(),  $pathParams),
+                                   "Annotation\Variable\RequestBody" =>$attribute->newInstance()->get($parameter->getType())
                                };
 
                                 array_push($params,  $obj);
                            }
                        }
-                       $userFunc = call_user_func_array($closure, $params);
-                        if($userFunc) echo json_encode($userFunc);
 
-            if($method != "GET" && isset($_SESSION['HTTP_REFERER'])){
-            echo "<script>document.location.replace('".$_SERVER['HTTP_REFERER']."')</script>";
+           $userFunc =   call_user_func_array($closure->bindTo(new $object), $params);
+                        if($userFunc) echo json_encode($userFunc);
+            //დავბრუნდეთ უკან თუ არაა გეთი
+            if($method != "GET" && isset($_SERVER['HTTP_REFERER']) && self::$returnBack){
+                 \Util::goBack();
             }
+
             exit; // სხვა add-ებს აღარ შეხედავს
         }
 
@@ -95,9 +93,9 @@ class Route{
 
         return  $this;
     }
-    public static function run()
+    public static function run($returnBack = true)
     {
-
+    self::$returnBack = $returnBack;
         //თუ არც ერთი გვერდი არ ჩაიტვირთა
         if( self::$success === false){
             Page::$conf["useHeader"] = false;

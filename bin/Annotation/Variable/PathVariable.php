@@ -6,6 +6,10 @@ namespace Annotation\Variable;
 
 use Exception;
 
+/**
+ * Class PathVariable
+ * @package Annotation\Variable
+ */
 #[\Attribute] class PathVariable
 {
     /**
@@ -13,8 +17,8 @@ use Exception;
      */
     function  get(string|null $type, string $typeName, array $args): string
     {
-
        if(isset($args[$typeName])){
+
            $var = $args[$typeName];
            if($type) settype($var, $type);
            return $var;

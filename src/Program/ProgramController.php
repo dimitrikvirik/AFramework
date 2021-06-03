@@ -10,6 +10,7 @@ use Annotation\Mapping\PostMapping;
 use Annotation\Mapping\RequestMapping;
 use Annotation\Variable\PathVariable;
 use Annotation\Variable\RequestBody;
+use Web\Page;
 
 #[Controller]
 #[RequestMapping("/programs")]
@@ -19,14 +20,16 @@ class ProgramController
     static ProgramServe $programServe;
 
     #[GetMapping]
-    function index(): array{
-       return self::$programServe->get();
+    function index(){
+        Page::$var["programs"] = self::$programServe->get();
+        Page::view("programs/all", "Programs List");
     }
-    #[GetMapping("/{id}")]
+    #[GetMapping("/add/{id}")]
     function get(#[PathVariable] int $id){
-    echo   json_encode(self::$programServe->getById($id));
-
+         self::$programServe->addToUser($id);
     }
+
+
     #[PostMapping]
     function create(#[RequestBody] ProgramView $programView){
         self::$programServe->add($programView);
