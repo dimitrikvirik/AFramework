@@ -8,9 +8,9 @@
         <li><a href="/user/login">Login</a></li>
         <?php else: ?>
         <li><a href="/">Profile</a></li>
+        <li><a href="/programs">Programs</a></li>
         <?php endif; ?>
         <li><a href="/about-us">About Us</a></li>
-        <li><a href="/programs">Programs</a></li>
         <li><a href="/contact">Contact</a></li>
     </ul>
 </header>

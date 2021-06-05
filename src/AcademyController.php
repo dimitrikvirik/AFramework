@@ -4,8 +4,6 @@
 
 
 use Annotation\Controller;
-use Annotation\Injection\AutoWired;
-use Annotation\Injection\Qualifier;
 use Annotation\Mapping\GetMapping;
 use Annotation\Mapping\PostMapping;
 use DB\DB;

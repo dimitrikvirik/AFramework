@@ -2,107 +2,90 @@
 
 
 namespace Web;
+use Annotation\Controller;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use RecursiveRegexIterator;
+use ReflectionClass;
+use ReflectionException;
 use ReflectionMethod;
+use RegexIterator;
+use Util;
 
 class Route{
-    private static bool $success = false;
-    private static bool $returnBack = true;
-
+    static bool $success = false;
     /**
-     * Route constructor.
-     * @param string $url
-     * @param bool $success
+     * @throws ReflectionException
      */
-    public function __construct($useLoad)
-    {
-    }
-    public static  function  add(string $path,  ReflectionMethod $func, string $method = "GET")
+    static function run()
     {
 
-        $reurl = $_SERVER["REDIRECT_URL"] ?? "und";
-
-        $method = strtoupper($method);
-        $condition = false;
-        $params = array();
-        $pathParams = array();
-        //ვამოწმებთ თუ მთავარ გვერდზე არ გადადის
-
-        if ($reurl !== "und") {
-            $arr_url = explode("/", $reurl);
-            $arr_path = explode("/", $path);
-            //ვამოწმებთ თუ ემთხვევა რაოდენობრივად
-            if (sizeof($arr_url) === sizeof($arr_path)) {
-
-                for($i = 0; $i < sizeof($arr_path); $i++){
-                    if(str_starts_with($arr_path[$i], '{') && str_ends_with($arr_path[$i], '}')){
-                        $pathParams[substr($arr_path[$i], 1, -1)] = $arr_url[$i];
-                        $arr_path[$i] = $arr_url[$i];
-                    }
-                }
-                //თუ ყველა ელემენტები ერთმანეთს ემთხვევა
-                if ($arr_path == $arr_url) {
-                    $condition = true;
-                }
-            }
-        } elseif ($path == "") $condition = true;
-
-        if ($condition && $_SERVER["REQUEST_METHOD"] == $method) {
-
-                self::$success = true;
-                $object = new $func->class(); // ფუნქციის კლასი
-                $closure =  $func->getClosure($object);
-                       foreach ($func->getParameters() as &$parameter){
-                           foreach ($parameter->getAttributes() as &$attribute){
-
-                               $obj = match ($attribute->getName()) {
-                                   "Annotation\Variable\RequestParam" => $attribute->newInstance()->get($parameter->getType(), $parameter->getName()),
-                                   "Annotation\Variable\PathVariable" => $attribute->newInstance()->get($parameter->getType(), $parameter->getName(),  $pathParams),
-                                   "Annotation\Variable\RequestBody" =>$attribute->newInstance()->get($parameter->getType())
-                               };
-
-                                array_push($params,  $obj);
-                           }
-                       }
-
-           $userFunc =   call_user_func_array($closure->bindTo(new $object), $params);
-                        if($userFunc) echo json_encode($userFunc);
-            //დავბრუნდეთ უკან თუ არაა გეთი
-            if($method != "GET" && isset($_SERVER['HTTP_REFERER']) && self::$returnBack){
-                 \Util::goBack();
-            }
-
-            exit; // სხვა add-ებს აღარ შეხედავს
-        }
-
-    }
-
-    /**
-     * ყველა resources ფაილების წვდომადის გახდება მისი სახელის მიხედვით.
-     * @example resources/about-us.php -> localhost/about
-     */
-    public function importView(): static
-    {
-        $reurl  =   $_SERVER["REDIRECT_URL"];
-        if($reurl == "/[NC,F]") $reurl = "/home";
-        elseif (file_exists("./resources{$reurl}.php")){
-            $this->success = true;
-            include "./resources{$reurl}.php";
+        $dir = "src/";
+        $di = new RecursiveDirectoryIterator($dir); //გადაურბენს ყველა დირეკტორიას
+        $Iterator = new RecursiveIteratorIterator($di);
+            // გადაურბენს თითო ფაილს დირექტორიაში
+            $Regex = new RegexIterator($Iterator, '/^.+\.php$/i'); // გადაირბენს ფაილს regex-ის შეამოწმით
+            foreach ($Regex as $regex){
+                $className = substr($regex, strlen($dir), -strlen('.php')); // კლასის სახელი
+                $refClass = new ReflectionClass($className);
+                echo $refClass->getName();
+                array_map(function ($atr) use ($refClass)
+                {$atr->newInstance()->call($refClass); }// კლასს გამოუძახებს თითო ატრიბუტ კლასს
+                    ,$refClass->getAttributes());
+                $Iterator->next();
 
         }
 
 
-        return  $this;
-    }
-    public static function run($returnBack = true)
-    {
-    self::$returnBack = $returnBack;
-        //თუ არც ერთი გვერდი არ ჩაიტვირთა
-        if( self::$success === false){
-            Page::$conf["useHeader"] = false;
-            Page::$conf["useFooter"] = false;
+
+
+        if(!self::$success){
             Page::view("404", "Page Not Found!");
         }
     }
+
+    /**
+     * @throws ReflectionException
+     */
+    static  function  add(string $path,   $func, string $method = "GET")
+    {
+        $method = strtoupper($method);
+        if($_SERVER["REQUEST_METHOD"] == $method) {
+            $reUrl = $_SERVER["REDIRECT_URL"] ?? "und";
+            $params = array();
+            $pathParams = array();
+            //ვამოწმებთ თუ მთავარ გვერდზე არ გადადის
+            foreach ( $func->getAttributes() as &$atr){
+                $pathParams = $atr->newInstance()->returnValue($atr, ["reUrl" => $reUrl,"path" => $path]);
+            }
+            if (self::$success) {
+                $object = new $func->class();
+                foreach ($func->getParameters() as &$parameter) {
+                    foreach ($parameter->getAttributes() as &$attribute) {
+                        $attribute->newInstance()->get($parameter->getType(), $parameter->getName(), $pathParams);
+
+
+
+                        $obj = match ($attribute->getName()) {
+                            "Annotation\Variable\RequestParam" => $attribute->newInstance()->get($parameter->getType(), $parameter->getName()),
+                            "Annotation\Variable\PathVariable" => $attribute->newInstance()->get($parameter->getType(), $parameter->getName(), $pathParams),
+                            "Annotation\Variable\RequestBody" => $attribute->newInstance()->get($parameter->getType())
+                        };
+                        array_push($params, $obj);
+                    }
+                }
+                $func->invokeArgs($object, $params);
+
+                //დავბრუნდეთ უკან თუ არაა გეთი
+                if ($method != "GET" && isset($_SERVER['HTTP_REFERER'])) \Util::goBack();
+
+                exit; // სხვა add-ებს აღარ შეხედავს
+            }
+        }
+    }
+
+
+
 
 
 

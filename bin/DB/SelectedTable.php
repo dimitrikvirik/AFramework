@@ -4,9 +4,11 @@
 namespace DB;
 
 
-use JetBrains\PhpStorm\Pure;
-use Objects\NotFoundObject;
-
+/**
+ * Class SelectedTable
+ * მონიშნულ ცხრილზე ოპერაციები
+ * @package DB
+ */
 class SelectedTable extends Table
 {
     public function __construct(string $tableName, array $columns = null)
@@ -17,22 +19,23 @@ class SelectedTable extends Table
         else $what = '*';
         $this->sql = "SELECT {$what} FROM {$this->tableName}";
     }
-    public function limit(int $number): static
-    {
-       $this->sql .= " LIMIT $number";
-       return $this;
-    }
-    public function orderBy(string $column): static
-    {
-        $this->sql .= " ORDER BY $column";
-        return $this;
-    }
 
+    /**
+     * მონიშვნა where პირობით
+     * @param string $statement
+     * @return $this
+     */
     public function where(string $statement): static
     {
         $this->sql .= " where $statement";
         return $this;
     }
+
+    /**
+     * იგივეა რაც where მაგრამ პირდაპირ primary key-ით ეძებს
+     * @param int $id
+     * @return $this
+     */
     public  function byId(int $id): static
     {
         $this->sql = "SHOW KEYS FROM {$this->tableName} WHERE Key_name = 'PRIMARY'";

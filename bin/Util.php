@@ -11,20 +11,7 @@ class Util
      * გადაუვლის ყველა კლასს src დირექტორიაში და გამოიძახებს მაგაზე ფუნქციას
      */
     static function EachClass($func, string $attribute = "ANY"){
-        $di = new RecursiveDirectoryIterator('src/');
-        //გადავუვლით ყველა ფაილებს ყველა ქვეპაპკაში
-        if($attribute != "ANY") $attribute = "Annotation\\".$attribute;
-        foreach (new RecursiveIteratorIterator($di) as $filename => $file) {
-            if (str_ends_with($file, ".php")) {
-                $className = substr($file, 3, -4);
-                $refClass = new ReflectionClass($className);
-                foreach ($refClass->getAttributes() as &$atr){
-                    if( $atr->getName() ==  $attribute || $attribute == "ANY"){
-                        call_user_func($func, $refClass);
-                    }
-                }
-            }
-        }
+
     }
     static function ReadConf($key){
         $json =  json_decode(file_get_contents("resources/config.json"), true);
@@ -45,7 +32,7 @@ class Util
     static function goBack(){
         echo "<script>document.location.replace('".$_SERVER['HTTP_REFERER']."')</script>";
     }
-    static  function  printUserInfo($user){
+    static  function  printUserInfo($user, $additional = ""){
                   echo  "<table class='table-info'>
                 <tr>
                     <th colspan='2'>User Info</th>
@@ -69,7 +56,7 @@ class Util
             <tr>
                 <td>Age</td>
                 <td>{$user["age"]}</td>
-            </tr>
+            </tr>".$additional."
             </table>";
       }
       static  function printUserPrograms($groups){
@@ -98,14 +85,22 @@ class Util
             }
             echo "</table>";
       }
-      public static function exportData($data){
-
-          $file = fopen("resources/cache/myfile.txt", "w") or die("Unable to open file!");
-
-          $json = json_encode($data);
-          fwrite($file, $json);
-          fclose($file);
+       static function exportData(array $exportData, array $ignore, string $filename, bool $is_associated = true)
+      {
+          $array = [];
+          foreach ($exportData as $key => $value) {
+              if((!is_numeric($key) || !$is_associated)  && !in_array($value, $ignore))
+                array_push($array, [$key, $value]);
+          }
+          header("Content-Disposition: attachment; filename=\"$filename\"");
+          header("Expires: 0");
+          header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+          header("Cache-Control: private",false);
+          $out = fopen("php://output", 'w');
+          foreach ($array as $data) {
+              fputcsv($out,  $data, "\t");
+          }
+          fclose($out);
       }
-
 
 }

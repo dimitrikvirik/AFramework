@@ -1,9 +1,4 @@
 {
-  "admin":
-  {
-    "username": "root",
-    "password": "123"
-  },
   "page": {
     "title": "MySite",
     "useHeader": true,
@@ -22,11 +17,5 @@
     "user": "root",
     "password": "",
     "port": "3306"
-  },
-  "email": {
-    "host": "",
-    "user": "",
-    "password": "",
-    "port": ""
   }
 }

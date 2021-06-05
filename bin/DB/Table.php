@@ -4,8 +4,7 @@
 namespace DB;
 
 
-use Objects\NotFoundObject;
-use PDOException;
+
 use PDOStatement;
 
 class Table
@@ -15,12 +14,10 @@ class Table
      public function __construct(
          public string $tableName
      )
-     {
-
-     }
+     {}
     /**
      * @param array $data
-     * მონაცემის ჩამატება
+     * მონაცემის ჩამატება ცხრილში
      */
     public  function insert(array $data): static
     {
@@ -28,21 +25,38 @@ class Table
         $values = '('.implode(', ',
                 preg_filter('/^/', ':', array_keys($data))).')';
         $this->sql = "INSERT INTO {$this->tableName} {$keys} VALUES {$values}";
-
         $this->data = $data;
         return $this;
     }
+
+    /**
+     * აბრუნებს მონიშნულ ცხრილს
+     * @return SelectedTable
+     */
     public  function select(): SelectedTable
     {
         return new SelectedTable($this->tableName);
     }
-    public  function delete($statement){
+
+    /**
+     * მონაცემის წაშლა შემოწმებით
+     * @param $statement
+     * @return $this
+     */
+    public  function delete($statement): static
+    {
         $this->sql = "DELETE FROM  {$this->tableName} {$statement}";
         return $this;
     }
+
+    /**
+     * ველების განახლება WHERE შემოწმებით
+     * @param array $data
+     * @param $where
+     * @return $this
+     */
     public  function update(array $data, $where): static
     {
-
         $this->sql = "UPDATE $this->tableName SET";
 
         foreach ($data as $key=>$value){
@@ -54,10 +68,13 @@ class Table
         return $this;
     }
 
-    //Execute მეთოდის გადატვირთვა
+    /**
+     * საბოლოო ბაზისკენ რექვესტი გაგზავნა
+     * @return PDOStatement|string
+     */
       function execute (): PDOStatement|string
       {
-            $stmt = Connection::$conn->prepare($this->sql);
+            $stmt = DB::$conn->prepare($this->sql);
             $stmt->execute($this->data);
             return $stmt;
     }

@@ -10,7 +10,7 @@ use Web\Page;
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title><?= Page::$title ?></title>
+    <title><?= Page::$conf["title"].' | '.Page::$title ?></title>
     <!-- Include css-->
     <?php foreach (Page::$conf["css"] as $key): ?>
     <link href="/resources/static/css/<?=$key?>.css" rel="stylesheet" type="text/css">
