@@ -15,7 +15,6 @@
     "host": "localhost",
     "dbname": "academy",
     "user": "root",
-    "password": "",
-    "port": "3306"
+    "password": ""
   }
 }

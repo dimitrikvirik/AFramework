@@ -4,11 +4,9 @@ function responsive(){
         $("#menu").hide();
         $("#menu-button").show()
          menuVisible = false;
-        $("header").prepend( $("#title"))
     }
     else{
         $("#menu-button").hide()
-        $("#menu").prepend( $("#title"))
         menuVisible = true
         $("#menu").show().css("height", "auto")
     }
