@@ -33,7 +33,12 @@ class Util
         echo "<script>document.location.replace('".$_SERVER['HTTP_REFERER']."')</script>";
     }
     static  function  printUserInfo($user, $additional = ""){
-                  echo  "<table class='table-info'>
+                  echo
+              "
+<div class='user-profile'>
+    <img alt='profile image' src='{$user['profile_src']}' >
+</div>    
+<table class='table-info'>
                 <tr>
                     <th colspan='2'>User Info</th>
                 </tr>

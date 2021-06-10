@@ -1,7 +1,12 @@
 <?php \Web\Page::addCss("user") ?>
 <div id="inner">
-    <form  action="/user/reg" method="post">
+    <form  action="/user/reg" method="post" enctype="multipart/form-data">
         <p style="color: red"><?php Util::PrintError("val"); ?></p>
+        <label>
+            Profile photo:
+            <input type="file" name="profilePhoto">
+        </label>
+
         <label>
             Email:
             <input type="email" name="email" required>

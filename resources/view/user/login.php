@@ -12,7 +12,6 @@
     </label>
     <input type="submit" value="Login">
     <a href="/user/reg">Registration</a>
-    <a href="/user/recover">Forget Password?</a>
 </form>
 
 </div>

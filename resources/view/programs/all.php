@@ -31,9 +31,8 @@ foreach ($programs as &$program){
         echo "
             <td><button onclick='deleteProgram({$program["id"]})'>Delete</button></td>
             <td><button onclick='editProgram({$program["id"]})'>Edit</button></td>
-            <td><button onclick='location.href= `{$src}`'>Registred Students</button></td>
+            <td><button onclick='location.href= `{$src}`'>Registered Students</button></td>
             ";
-
     }
     else{
         echo "

@@ -2,6 +2,7 @@
 
 namespace  Program;
 
+
 use Annotation\Controller;
 use Annotation\Mapping\GetMapping;
 use Annotation\Mapping\PostMapping;
@@ -30,11 +31,13 @@ class UserController
         $hash = $user["password"];
         if(password_verify($data['password'], $hash )){
             $_SESSION["user"] = $user;
+            header("Location: /");
         }
         else{
             $_SESSION["valErr"] = "Wrong email or password!";
+            header("Location: /user/login");
         }
-        header("Location: /");
+
     }
     #[GetMapping("/reg")]
     function reg(){
@@ -43,6 +46,24 @@ class UserController
     #[PostMapping("/reg")]
     function regForm(){
         $data = $_POST;
+
+        $target_dir = "resources/upload/";
+        $newFilename=   date('dmYHis').$_FILES["profilePhoto"]["name"];
+        $target_file = $target_dir.$newFilename;
+        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+        $imageErr = "";
+        if ($_FILES["profilePhoto"]["size"] > 1000000) {
+            $imageErr = "File is too big";
+        }
+        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+            && $imageFileType != "gif" ) {
+            $imageErr = "File is not image";
+        }
+        if ($imageErr != "") {
+            $_SESSION["valErr"] = "Wrong $imageErr! Try again";
+            exit;
+        }
+
         //შემოწმება
         $checks = [
             "email" =>  filter_var($data["email"], FILTER_VALIDATE_EMAIL),
@@ -59,7 +80,9 @@ class UserController
         else{
             try {
                 $data["password"] = password_hash($data["password"],  PASSWORD_DEFAULT);
+                $data["profile_src"] = "/".$target_file;
                 DB::Table("users")->insert($data)->execute();
+                move_uploaded_file($_FILES["profilePhoto"]["tmp_name"], $target_file);
             }catch (\PDOException $e){
                 if(str_ends_with($e->getMessage(), "'email'"))
                     $_SESSION["valErr"] = "User with that email already registered";
@@ -76,7 +99,7 @@ class UserController
     function export(#[PathVariable] int $id){
         if($_SESSION["user"]["is_admin"]) {
             $user = DB::Table("users")->select()->byId($id)->execute()->fetch();
-            \Util::exportData($user, array($user["password"], $user["is_admin"]), $user["firstname"] . " " . $user["lastname"]);
+            \Util::exportData($user, array($user["password"], $user["is_admin"]), $user["firstname"] . " " . $user["lastname"].".txt");
         }
     }
 

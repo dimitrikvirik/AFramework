@@ -2,11 +2,12 @@
 
 
 
-
+namespace Program;
 use Annotation\Controller;
 use Annotation\Mapping\GetMapping;
 use Annotation\Mapping\PostMapping;
-use DB\DB;
+
+
 use Web\Page;
 
 #[Controller]

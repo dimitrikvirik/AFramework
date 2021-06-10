@@ -26,30 +26,7 @@ class RequestMapping
 
         Route::add($startPath.$this->value,$classMethod, $this->method);
     }
-    function returnValue(\ReflectionAttribute $attribute, array $given): array{
 
-        $pathParams = [];
-        if ($given["reUrl"] !== "und") {
-            $arr_url = explode("/", $given["reUrl"]);
-            $arr_path = explode("/", $given["path"]);
-            //ვამოწმებთ თუ ემთხვევა რაოდენობრივად
-            if (sizeof($arr_url) === sizeof($arr_path)) {
-
-                for ($i = 0; $i < sizeof($arr_path); $i++) {
-                    if (str_starts_with($arr_path[$i], '{') && str_ends_with($arr_path[$i], '}')) {
-                        $pathParams[substr($arr_path[$i], 1, -1)] = $arr_url[$i];
-                        $arr_path[$i] = $arr_url[$i];
-                    }
-                }
-                //თუ ყველა ელემენტები ერთმანეთს ემთხვევა
-                if ($arr_path == $arr_url) {
-
-                    Route::$success = true;
-                }
-            }
-        } elseif ($given["path"] == "")   Route::$success = true;
-        return  $pathParams;
-    }
 
 
 }

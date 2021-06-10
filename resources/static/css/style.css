@@ -110,6 +110,16 @@ footer span{
     border: 1px solid #ddd;
     padding: 8px;
 }
+.user-profile{
+    margin-top: 50px;
+    width: 100%;
+   display: flex;
+    justify-content: center;
+}
+.user-profile img{
+    border: 5px solid #555;
+    max-width: 500px;
+}
 .table-info tr:nth-child(even){background-color: #f2f2f2;}
 
 .table-info tr:hover {background-color: #ddd;}
@@ -174,6 +184,9 @@ form a{
 }
 
 @media screen and (max-width: 750px){
+    .user-profile img{
+        max-width: 200px;
+    }
     #menu{
         flex-direction: column;
         margin-left: 20px;

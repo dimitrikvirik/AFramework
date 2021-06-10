@@ -20,7 +20,6 @@ use Web\Page;
 class ProgramController
 {
 
-
     #[GetMapping]
     function index(){
         $programs =  DB::Table("programs")->select()->execute()->fetchAll();
